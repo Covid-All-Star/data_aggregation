@@ -29,5 +29,52 @@ View(political_response
 # deleting the columns containing notes and confirmed deaths plus confirmed cases 
 political_response <- political_response[,c(-6,-9,-12,-15,-18,-21,-23,-25,-27,-29,-31,-33,-35,-36,-37)]
 
+# renaming the column on which the database will be merged 
+names(political_response)[2] <- "countryterritoryCode"
+names(political_response)[3] <- "dateRep"
+
+# converting the dateRep variable in a date format 
+political_response$dateRep <- as.Date(as.character(political_response$dateRep), format = "%Y%m%d")
+
+# merging those two firsts datasets 
+
+ECD <- as.data.frame(ECD)
+political_response <- as.data.frame(political_response)
+
+panelcov <- plyr::join(ECD, political_response, type = "full")
+View(panelcov)
+
+# working on the covid test database
+Test_covid <- read_excel("Bureau/Coronavirus et commerce international/Données/Coronavirus/Test covid/Test_covid.xlsx")
+View(Test_covid)
+# removing non-essential columns
+Test_covid <- Test_covid[, c(-1,-2,-6,-7,-8,-9,-10,-12,-13,-14,-15,-16,-17,-18)]
+# renaming the merging variables 
+names(Test_covid)[1] <- "dateRep"
+names(Test_covid)[4] <- "countryterritoryCode"
+# merging the datasets 
+panelcov <- plyr::join(panelcov, Test_covid, type = "full")
+
+# working on the countries variable (not time dependent, i.e : beds, median age, density)
+library(readxl)
+Country_variable <- read_excel("Bureau/Coronavirus et commerce international/Données/Coronavirus/Country variable.xlsx")
+View(Country_variable)
+Country_variable <- Country_variable[,c(-1,-3,-4,-5,-7)]
+
+names(Country_variable)[1] <- "countryterritoryCode"
+panelcov <- plyr::join(panelcov, Country_variable, type = "full")
+
+# Finally, adding the gtrends data 
+library(readxl)
+gtrends <- read_excel("Bureau/Coronavirus et commerce international/Données/Coronavirus/Google trend/gtrends.xlsx")
+View(gtrends)
+gtrends <- gtrends[,c(-2,-3,-4)]
+names(gtrends)[2] <- "countryterritoryCode"
+panelcov <- plyr::join(panelcov, gtrends,  type = "full")
+
+# Exporting the database panelcov 
+write.csv(panelcov, file = "panelcov.csv")
+
+
 
 
