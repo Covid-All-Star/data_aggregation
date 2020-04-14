@@ -55,6 +55,17 @@ names(Test_covid)[4] <- "countryterritoryCode"
 # merging the datasets 
 panelcov <- plyr::join(panelcov, Test_covid, type = "full")
 
+# gini index work 
+gini1 <- aggregate(gini$Year, by = list(gini$Code), max)
+View(gini1)
+names(gini1)[1] <- "Code"
+View(gini1)
+gini2 <- plyr::join(gini, gini1, type = "full")
+View(gini2)
+names(gini2)[5] <- "Yearmax"
+gini3 <- gini2 %>% group_by(Code) %>% filter(Year == Yearmax)
+View(gini3)
+
 # working on the countries variable (not time dependent, i.e : beds, median age, density)
 library(readxl)
 Country_variable <- read_excel("Bureau/Coronavirus et commerce international/Données/Coronavirus/Country variable.xlsx")
