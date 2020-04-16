@@ -66,6 +66,12 @@ names(gini2)[5] <- "Yearmax"
 gini3 <- gini2 %>% group_by(Code) %>% filter(Year == Yearmax)
 View(gini3)
 
+# merging
+gini3 <- gini3[,c(-1,-3)]
+names(gini3)[3] <- "G_measurment_year"
+names(gini3)[1] <- "countryterritoryCode"
+panelcov <- plyr::join(panelcov, gini3, type = "full")
+
 # working on the countries variable (not time dependent, i.e : beds, median age, density)
 library(readxl)
 Country_variable <- read_excel("Bureau/Coronavirus et commerce international/Données/Coronavirus/Country variable.xlsx")
@@ -82,6 +88,37 @@ View(gtrends)
 gtrends <- gtrends[,c(-2,-3,-4)]
 names(gtrends)[2] <- "countryterritoryCode"
 panelcov <- plyr::join(panelcov, gtrends,  type = "full")
+
+# alternative version with gtrends data coming from the R package "gtrendsR"
+library(gtrendsR)
+library(dplyr)
+
+# importing a country list in order to loop 
+c_list = readLines("geo.csv")
+ 
+# looping 
+resultslist <- list()
+for (country in c_list){
+tryCatch({
+keywords = c("Coronavirus")
+time=("today 3-m")
+channel='news'
+trends = gtrends(keywords, gprop =channel,geo=country, time = time )
+resultslist[[country]] <- trends$interest_over_time
+}, error=function(e){})
+}
+
+# converting the result list in a proper dataframe 
+library(plyr)
+gtrends <- plyr::ldply(resultslist, rbind)
+View(gtrends)
+
+# arranging and aggregating
+gtrends <- gtrends[,c(-1,-2, -6, -7, -8, -9)]
+names(gtrends)[3] <- "geoId"
+names(gtrends)[1] <- "dateRep"
+names(gtrends)[2] <- "gtrends"
+panelcov2 <- plyr::join(panelcov1, gtrends, type = "full")
 
 # Exporting the database panelcov 
 write.csv(panelcov, file = "panelcov.csv")
