@@ -123,6 +123,21 @@ panelcov2 <- plyr::join(panelcov1, gtrends, type = "full")
 # Exporting the database panelcov 
 write.csv(panelcov, file = "panelcov.csv")
 
+# The gtrends database with US as base comparison 
+resultslist <- list()
+for (country in c_list){
+tryCatch({
+keywords = c("Coronavirus")
+combin= c("US", country)
+time=("2020-01-01 2020-04-21")
+channel='news'
+trends = gtrends(keywords, gprop =channel,geo=combin, time = time )
+resultslist[[country]] <- trends$interest_over_time
+}, error=function(e){})
+}
 
+# mémo pratique (pour Alexis) 
+fusionner les bases avec la manière suivant quand possible : 
+panelcov <- plyr::join(a,b, type = "left")
 
 
