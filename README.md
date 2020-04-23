@@ -24,7 +24,7 @@ View(ECD)
 # importing the data 
 library(readxl)
 political_response <- read_excel("OxCGRT_Download_070420_154408_Full.xlsx")
-View(political_response
+View(political_response)
 
 # deleting the columns containing notes and confirmed deaths plus confirmed cases 
 political_response <- political_response[,c(-6,-9,-12,-15,-18,-21,-23,-25,-27,-29,-31,-33,-35,-36,-37)]
@@ -129,6 +129,19 @@ for (country in c_list){
 tryCatch({
 keywords = c("Coronavirus")
 combin= c("US", country)
+time=("2020-01-01 2020-04-21")
+channel='news'
+trends = gtrends(keywords, gprop =channel,geo=combin, time = time )
+resultslist[[country]] <- trends$interest_over_time
+}, error=function(e){})
+}
+
+# the gtrends database with China as a base comparison 
+resultslist <- list()
+for (country in c_list){
+tryCatch({
+keywords = c("Coronavirus")
+combin= c("CN", country)
 time=("2020-01-01 2020-04-21")
 channel='news'
 trends = gtrends(keywords, gprop =channel,geo=combin, time = time )
