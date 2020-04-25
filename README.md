@@ -41,7 +41,7 @@ political_response$dateRep <- as.Date(as.character(political_response$dateRep), 
 ECD <- as.data.frame(ECD)
 political_response <- as.data.frame(political_response)
 
-panelcov <- plyr::join(ECD, political_response, type = "full")
+panelcov <- plyr::join(ECD, political_response, type = "left")
 View(panelcov)
 
 # working on the covid test database
