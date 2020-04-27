@@ -16,7 +16,7 @@ View(ECDPC_bis)
  ECDPC_bis <- ECDPC_bis %>% group_by(countryterritoryCode) %>% mutate(cum_cases = cumsum(cases))
  ECDPC_bis <- ECDPC_bis %>% group_by(countryterritoryCode) %>% mutate(cum_death = cumsum(deaths))
 
-# re-ordering the data and creating a new base 
+# re-ord ering the data and creating a new base 
 ECD <- ECDPC_bis[order(ECDPC_bis$countryterritoryCode),]
 View(ECD)
 
@@ -53,7 +53,7 @@ Test_covid <- Test_covid[, c(-1,-2,-6,-7,-8,-9,-10,-12,-13,-14,-15,-16,-17,-18)]
 names(Test_covid)[1] <- "dateRep"
 names(Test_covid)[4] <- "countryterritoryCode"
 # merging the datasets 
-panelcov <- plyr::join(panelcov, Test_covid, type = "full")
+panelcov <- plyr::join(panelcov, Test_covid, type = "left")
 
 # gini index work 
 gini1 <- aggregate(gini$Year, by = list(gini$Code), max)
@@ -70,7 +70,7 @@ View(gini3)
 gini3 <- gini3[,c(-1,-3)]
 names(gini3)[3] <- "G_measurment_year"
 names(gini3)[1] <- "countryterritoryCode"
-panelcov <- plyr::join(panelcov, gini3, type = "full")
+panelcov <- plyr::join(panelcov, gini3, type = "left")
 
 # working on the countries variable (not time dependent, i.e : beds, median age, density)
 library(readxl)
@@ -79,7 +79,14 @@ View(Country_variable)
 Country_variable <- Country_variable[,c(-1,-3,-4,-5,-7)]
 
 names(Country_variable)[1] <- "countryterritoryCode"
-panelcov <- plyr::join(panelcov, Country_variable, type = "full")
+panelcov <- plyr::join(panelcov, Country_variable, type = "left")
+
+# adding the global health security index
+GHS_index <- read_excel("Bureau/Coronavirus et commerce international/Données/Coronavirus/Data source/GHS index.xlsx")
+View(GHS_index)
+GHS_index <- GHS_index[,-2]
+names(GHS_index)[1] <- "countryterritoryCode"
+panelcov <- plyr::join(panelcov, GHS_index, type = "left")
 
 # Finally, adding the gtrends data 
 library(readxl)
@@ -118,6 +125,8 @@ gtrends <- gtrends[,c(-1,-2, -6, -7, -8, -9)]
 names(gtrends)[3] <- "geoId"
 names(gtrends)[1] <- "dateRep"
 names(gtrends)[2] <- "gtrends"
+gtrends$geoId[gtrends$geoId == "GB"] <- "UK"
+gtrends$geoId[gtrends$geoId == "GR"] <- "EL"
 panelcov2 <- plyr::join(panelcov1, gtrends, type = "full")
 
 # Exporting the database panelcov 
@@ -142,8 +151,8 @@ for (country in c_list){
 tryCatch({
 keywords = c("Coronavirus")
 combin= c("CN", country)
-time=("2020-01-01 2020-04-21")
-channel='news'
+time=("2020-01-01 2020-04-27")
+channel='web'
 trends = gtrends(keywords, gprop =channel,geo=combin, time = time )
 resultslist[[country]] <- trends$interest_over_time
 }, error=function(e){})
