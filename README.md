@@ -68,8 +68,8 @@ View(gini3)
 
 # merging
 gini3 <- gini3[,c(-1,-3)]
-names(gini3)[3] <- "G_measurment_year"
-names(gini3)[1] <- "countryterritoryCode"
+ names(gini3)[3] <- "G_measurment_year"
+ names(gini3)[1] <- "countryterritoryCode"
 panelcov <- plyr::join(panelcov, gini3, type = "left")
 
 # working on the countries variable (not time dependent, i.e : beds, median age, density)
