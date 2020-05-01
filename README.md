@@ -29,8 +29,8 @@ View(political_response)
 # deleting the columns containing notes and confirmed deaths plus confirmed cases 
 political_response <- political_response[,c(-1, -6, -9, -12, -15, -18, -21, -24, -26, -29, -31, -33, -35, -38, -40, -42, -44, -46, -48, -49, -50, -51, -52)]
 # renaming the column on which the database will be merged 
-names(political_response)[2] <- "countryterritoryCode"
-names(political_response)[3] <- "dateRep"
+names(political_response)[1] <- "countryterritoryCode"
+names(political_response)[2] <- "dateRep"
 
 # converting the dateRep variable in a date format 
 political_response$dateRep <- as.Date(as.character(political_response$dateRep), format = "%Y%m%d")
