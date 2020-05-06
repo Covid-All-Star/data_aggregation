@@ -54,6 +54,20 @@ names(Test_covid)[4] <- "countryterritoryCode"
 # merging the datasets 
 panelcov <- plyr::join(panelcov, Test_covid, type = "left")
 
+# google mobility report data
+Global_Mobility_Report.1 <- read.csv("~/Bureau/Coronavirus et commerce international/Données/Coronavirus/Data source/Global_Mobility_Report-1.csv")
+View(Global_Mobility_Report.1)
+
+Global_Mobility_Report.1$sub_region_1 <- as.character(Global_Mobility_Report.1$sub_region_1)
+Global_Mobility_Report.1$sub_region_2 <- as.character(Global_Mobility_Report.1$sub_region_2)
+
+mobility_report <- Global_Mobility_Report.1 %>% filter(sub_region_1 == sub_region_2)
+View(mobility_report)
+
+names(mobility_report)[1] <- "geoId"
+names(mobility_report)[2] <- "dateRep"
+panelcov1 <- plyr::join(panelcov, mobility_report)
+
 # gini index work 
 gini1 <- aggregate(gini$Year, by = list(gini$Code), max)
 View(gini1)
