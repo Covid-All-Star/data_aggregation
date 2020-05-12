@@ -28,6 +28,7 @@ View(political_response)
 
 # deleting the columns containing notes and confirmed deaths plus confirmed cases 
 political_response <- political_response[,c(-1, -6, -9, -12, -15, -18, -21, -24, -26, -29, -31, -33, -35, -38, -40, -42, -44, -46, -48, -49, -50, -51, -52)]
+political_response <- political_response[,c(-1,-31,-32,-33,-34)]
 # renaming the column on which the database will be merged 
 names(political_response)[1] <- "countryterritoryCode"
 names(political_response)[2] <- "dateRep"
@@ -64,8 +65,17 @@ Global_Mobility_Report.1$sub_region_2 <- as.character(Global_Mobility_Report.1$s
 mobility_report <- Global_Mobility_Report.1 %>% filter(sub_region_1 == sub_region_2)
 View(mobility_report)
 
+mobility_report <- mobility_report[,c(-2,-3,-4)]
 names(mobility_report)[1] <- "geoId"
 names(mobility_report)[2] <- "dateRep"
+names(mobility_report)[3] <- "mobility_retail_recreation"
+names(mobility_report)[4] <- "mobility_grocery_pharmacy"
+names(mobility_report)[5] <- "mobility_parks"
+names(mobility_report)[6] <- "mobility_transportation"
+names(mobility_report)[7] <-"mobility_workplaces"
+names(mobility_report)[8] <- "mobility_residentials"
+
+
 panelcov1 <- plyr::join(panelcov, mobility_report)
 
 # gini index work 
