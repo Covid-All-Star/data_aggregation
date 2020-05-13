@@ -59,10 +59,10 @@ panelcov <- plyr::join(panelcov, Test_covid, type = "left")
 Global_Mobility_Report.1 <- read.csv("~/Bureau/Coronavirus et commerce international/Données/Coronavirus/Data source/Global_Mobility_Report-1.csv")
 View(Global_Mobility_Report.1)
 
-Global_Mobility_Report.1$sub_region_1 <- as.character(Global_Mobility_Report.1$sub_region_1)
-Global_Mobility_Report.1$sub_region_2 <- as.character(Global_Mobility_Report.1$sub_region_2)
+Global_Mobility_Report$sub_region_1 <- as.character(Global_Mobility_Report$sub_region_1)
+Global_Mobility_Report$sub_region_2 <- as.character(Global_Mobility_Report$sub_region_2)
 
-mobility_report <- Global_Mobility_Report.1 %>% filter(sub_region_1 == sub_region_2)
+mobility_report <- Global_Mobility_Report %>% filter(sub_region_1 == sub_region_2)
 View(mobility_report)
 
 mobility_report <- mobility_report[,c(-2,-3,-4)]
