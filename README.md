@@ -12,9 +12,9 @@ ECDPC_bis <- ECDPC_corona[order(ECDPC_corona$dateRep, ECDPC_corona$countryterrit
 View(ECDPC_bis)
 
 # creating the cumulative sum of cases and deaths 
- library(dplyr)
- ECDPC_bis <- ECDPC_bis %>% group_by(countryterritoryCode) %>% mutate(cum_cases = cumsum(cases))
- ECDPC_bis <- ECDPC_bis %>% group_by(countryterritoryCode) %>% mutate(cum_death = cumsum(deaths))
+library(dplyr)
+ECDPC_bis <- ECDPC_bis %>% group_by(countryterritoryCode) %>% mutate(cum_cases = cumsum(cases))
+ECDPC_bis <- ECDPC_bis %>% group_by(countryterritoryCode) %>% mutate(cum_death = cumsum(deaths))
 
 # re-ord ering the data and creating a new base 
 ECD <- ECDPC_bis[order(ECDPC_bis$countryterritoryCode),]
