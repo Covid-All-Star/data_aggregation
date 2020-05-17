@@ -49,6 +49,7 @@ Test_covid <- read_excel("Bureau/Coronavirus et commerce international/Données/
 View(Test_covid)
 # removing non-essential columns
 Test_covid <- Test_covid[, c(-1,-2,-6,-7,-8,-9,-10,-12,-13,-14,-15,-16,-17,-18)]
+Test_covid <- Test_covid[,c(-5,-7)]
 # renaming the merging variables 
 names(Test_covid)[1] <- "dateRep"
 names(Test_covid)[4] <- "countryterritoryCode"
