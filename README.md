@@ -76,6 +76,9 @@ names(mobility_report)[6] <- "mobility_transportation"
 names(mobility_report)[7] <-"mobility_workplaces"
 names(mobility_report)[8] <- "mobility_residentials"
 
+mobility_report$geoId[mobility_report$geoId == "GB"] <- "UK"
+mobility_report$geoId[mobility_report$geoId == "GR"] <- "EL"
+
 
 panelcov1 <- plyr::join(panelcov, mobility_report)
 
