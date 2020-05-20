@@ -149,7 +149,7 @@ gtrends <- plyr::ldply(resultslist, rbind)
 View(gtrends)
 
 # arranging and aggregating
-gtrends <- gtrends[,c(-1,-2, -6, -7, -8, -9)]
+gtrends <- gtrends[,c(-1,-4,-6,-7,-8)]
 names(gtrends)[3] <- "geoId"
 names(gtrends)[1] <- "dateRep"
 names(gtrends)[2] <- "gtrends"
