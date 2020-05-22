@@ -56,6 +56,15 @@ names(Test_covid)[4] <- "countryterritoryCode"
 # merging the datasets 
 panelcov <- plyr::join(panelcov, Test_covid, type = "left")
 
+# alternative version with owid database
+test_owid <- read_excel("Data source/test_owid.xlsx")
+View(test_owid)
+test_owid <- test_owid[,c(-2,-4,-5,-6,-7,-8,-9,-10,-11,-14,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32)]
+
+names(test_owid)[1] <- "countryterritoryCode"
+names(test_owid)[2] <- "dateRep"
+panelcov <- plyr::join(panelcov, test_owid, type = "left")
+
 # google mobility report data
 Global_Mobility_Report.1 <- read.csv("~/Bureau/Coronavirus et commerce international/Données/Coronavirus/Data source/Global_Mobility_Report-1.csv")
 View(Global_Mobility_Report.1)
@@ -115,6 +124,12 @@ View(GHS_index)
 GHS_index <- GHS_index[,-2]
 names(GHS_index)[1] <- "countryterritoryCode"
 panelcov <- plyr::join(panelcov, GHS_index, type = "left")
+
+# Removing some little countries 
+panelcov1 <- panelcov1 %>% filter(geoId != "EH")
+panelcov1 <- panelcov1 %>% filter(geoId != "FK")
+panelcov1 <- panelcov1 %>% filter(geoId != "BQ")
+panelcov1 <- panelcov1 %>% filter(geoId != "AI")
 
 # Finally, adding the gtrends data 
 library(readxl)
