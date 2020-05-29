@@ -59,7 +59,7 @@ panelcov <- plyr::join(panelcov, Test_covid, type = "left")
 # alternative version with owid database
 test_owid <- read_excel("Data source/test_owid.xlsx")
 View(test_owid)
-test_owid <- test_owid[,c(-2,-4,-5,-6,-7,-8,-9,-10,-11,-14,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32)]
+test_owid <- test_owid[,c(-2,-4,-5,-6,-7,-8,-9,-10,-11,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25)]
 
 names(test_owid)[1] <- "countryterritoryCode"
 names(test_owid)[2] <- "dateRep"
@@ -90,7 +90,7 @@ mobility_report$geoId[mobility_report$geoId == "GB"] <- "UK"
 mobility_report$geoId[mobility_report$geoId == "GR"] <- "EL"
 
 
-panelcov1 <- plyr::join(panelcov, mobility_report)
+panelcov1 <- plyr::join(panelcov, mobility_report, type = "left")
 
 # gini index work 
 gini1 <- aggregate(gini$Year, by = list(gini$Code), max)
