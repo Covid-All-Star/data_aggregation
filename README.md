@@ -29,6 +29,7 @@ View(political_response)
 # deleting the columns containing notes and confirmed deaths plus confirmed cases 
 political_response <- political_response[,c(-1, -6, -9, -12, -15, -18, -21, -24, -26, -29, -31, -33, -35, -38, -40, -42, -44, -46, -48, -49, -50, -51, -52)]
 political_response <- political_response[,c(-1,-31,-32,-33,-34)]
+political_response <- political_response[,c(-1,-31,-32,-33,-34,-37,-38,-39,-40,-41,-42)]
 # renaming the column on which the database will be merged 
 names(political_response)[1] <- "countryterritoryCode"
 names(political_response)[2] <- "dateRep"
@@ -108,6 +109,14 @@ gini3 <- gini3[,c(-1,-3)]
 names(gini3)[3] <- "G_measurment_year"
 names(gini3)[1] <- "countryterritoryCode"
 panelcov <- plyr::join(panelcov, gini3, type = "left")
+
+# adding gdp forecasts 
+gdp_forecast <- read_excel("Data source/gdp_forecast.xlsx")
+View(gdp_forecast)
+gdp_forecast <- gdp_forecast[,c(-1)]
+names(gdp_forecast)[1] <- "countryterritoryCode"
+names(gdp_forecast)[2] <- "gdp_2020"
+panelcov2 <- plyr::join(panelcov2, gdp_forecast, type = "left")
 
 # working on the countries variable (not time dependent, i.e : beds, median age, density)
 library(readxl)
