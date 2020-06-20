@@ -60,7 +60,7 @@ panelcov <- plyr::join(panelcov, Test_covid, type = "left")
 # alternative version with owid database
 test_owid <- read_excel("Data source/test_owid.xlsx")
 View(test_owid)
-test_owid <- test_owid[,c(-2,-4,-5,-6,-7,-8,-9,-10,-11,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25)]
+ test_owid <- test_owid[,c(-2,-4,-5,-6,-7,-8,-9,-10,-11,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25)]
 
 names(test_owid)[1] <- "countryterritoryCode"
 names(test_owid)[2] <- "dateRep"
@@ -110,6 +110,26 @@ names(gini3)[3] <- "G_measurment_year"
 names(gini3)[1] <- "countryterritoryCode"
 panelcov <- plyr::join(panelcov, gini3, type = "left")
 
+# self reported trust
+library(readxl)
+trust <- read_excel("self-reported-trust-attitudes.xlsx")
+View(trust)
+
+trust1 <- aggregate(trust$Year, by = list(trust$Code), max)
+View(trust1)
+names(trust1)[1] <- "Code"
+trust2 <- plyr::join(trust, trust1, type = "full")
+View(trust2)
+names(trust2)[5] <- "Yearmax"
+trust3 <- trust2 %>% group_by(Code) %>% filter(Year == Yearmax)
+View(trust3)
+
+# merging
+trust3 <- trust3[,c(-1,-3)]
+names(trust3)[1] <- "countryterritoryCode"
+names(trust3)[2] <- "Trust"
+names(trust3)[3] <- "Trust_measurement_year"
+panelcov <- plyr::join(panelcov, trust3, type = "left")
 # adding gdp forecasts 
 gdp_forecast <- read_excel("Data source/gdp_forecast.xlsx")
 View(gdp_forecast)
