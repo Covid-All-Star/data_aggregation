@@ -60,7 +60,7 @@ panelcov <- plyr::join(panelcov, Test_covid, type = "left")
 # alternative version with owid database
 test_owid <- read_excel("Data source/test_owid.xlsx")
 View(test_owid)
- test_owid <- test_owid[,c(-2,-4,-5,-6,-7,-8,-9,-10,-11,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25)]
+test_owid <- test_owid[,c(-2,-3,-5,-6,-7,-8,-9,-10,-11,-12,-17,-18,-19,-20)]
 
 names(test_owid)[1] <- "countryterritoryCode"
 names(test_owid)[2] <- "dateRep"
